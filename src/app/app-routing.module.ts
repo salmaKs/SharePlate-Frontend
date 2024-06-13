@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AdminComponent } from './theme/layout/admin/admin.component';
 import { GuestComponent } from './theme/layout/guest/guest.component';
+import {DetailsComponent} from "./demo/pages/tables/details/details.component";
+import {ReceiptsComponent} from "./demo/pages/tables/receipts/receipts.component";
 
 const routes: Routes = [
   {
@@ -38,6 +40,8 @@ const routes: Routes = [
             (m) => m.TablesModule,
           ),
       },
+      { path: 'details/:id', component: DetailsComponent },
+      { path: 'receipts/:id', component: ReceiptsComponent },
       {
         path: 'apexchart',
         loadComponent: () =>

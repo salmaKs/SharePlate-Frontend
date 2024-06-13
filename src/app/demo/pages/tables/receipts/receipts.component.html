@@ -1,0 +1,32 @@
+<div class="row">
+  <div class="col-sm-12">
+    <app-card cardTitle="Receipt Details">
+      <div *ngIf="donation">
+        <h5>Donation Information</h5>
+        <ul class="list-group">
+          <li class="list-group-item"><strong>Donation Type:</strong> {{ donation.donationType }}</li>
+          <li class="list-group-item"><strong>Available Quantity:</strong> {{ donation.quantity }} {{ donation.unit }}</li>
+          <li class="list-group-item"><strong>Pick-up Location:</strong> {{ donation.pickupLocation }}</li>
+        </ul>
+
+        <h5 class="mt-4">Pick-up Information</h5>
+        <form (ngSubmit)="submitReceipt()">
+          <div class="mb-3">
+            <label for="quantity" class="form-label">Quantity</label>
+            <input type="number" class="form-control" id="quantity" [(ngModel)]="quantity" name="quantity" [max]="maxQuantity" [min]="1" required />
+            <div *ngIf="quantity > maxQuantity || quantity < 1" class="text-danger">Please enter a valid quantity (1 to {{ maxQuantity }}).</div>
+          </div>
+          <div class="mb-3">
+            <label for="pickupDate" class="form-label">Pick-up Date</label>
+            <input type="text" class="form-control" id="pickupDate" [value]="pickupDate" disabled />
+          </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+      </div>
+      <div *ngIf="!donation">
+        <p>Loading donation details...</p>
+      </div>
+    </app-card>
+  </div>
+</div>
+

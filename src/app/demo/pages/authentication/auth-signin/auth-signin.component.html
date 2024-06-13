@@ -13,10 +13,22 @@
         </div>
         <h3 class="mb-4">Login</h3>
         <div class="input-group mb-3">
-          <input type="email" class="form-control" placeholder="Email" />
+          <input
+            type="email"
+            class="form-control"
+            placeholder="Email"
+            [(ngModel)]="mail"
+            name="email"
+          />
         </div>
         <div class="input-group mb-4">
-          <input type="password" class="form-control" placeholder="Password" />
+          <input
+            type="password"
+            class="form-control"
+            placeholder="Password"
+            [(ngModel)]="pwd"
+            name="password"
+          />
         </div>
         <div class="form-group text-start mb-4">
           <div class="checkbox checkbox-fill d-inline">
@@ -29,7 +41,12 @@
             <label for="checkbox-fill-a1" class="cr"> Save Details</label>
           </div>
         </div>
-        <button class="btn btn-primary mb-4">Login</button>
+        <!-- Message for incorrect information -->
+        <div *ngIf="showErrorMessage" class="alert alert-danger" role="alert">
+          Incorrect email or password. Please try again.
+        </div>
+
+        <button class="btn btn-primary mb-4" (click)="userExist(mail , pwd)">Login</button>
         <p class="mb-2 text-muted">
           Forgot password? <a [routerLink]="['/auth/reset-password']">Reset</a>
         </p>

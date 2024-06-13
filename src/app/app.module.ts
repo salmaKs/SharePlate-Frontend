@@ -23,8 +23,10 @@ import { NavItemComponent } from './theme/layout/admin/navigation/nav-content/na
 import { NavSearchComponent } from './theme/layout/admin/nav-bar/nav-left/nav-search/nav-search.component';
 import { NavigationItem } from './theme/layout/admin/navigation/navigation';
 import { ToggleFullScreenDirective } from './theme/shared/components/full-screen/toggle-full-screen';
+import {HttpClient, HttpClientModule} from "@angular/common/http";
 
 @NgModule({
+  bootstrap: [AppComponent],
   declarations: [
     AppComponent,
     GuestComponent,
@@ -46,11 +48,11 @@ import { ToggleFullScreenDirective } from './theme/shared/components/full-screen
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    HttpClientModule,
     ReactiveFormsModule,
     SharedModule,
     BrowserAnimationsModule,
   ],
   providers: [NavigationItem],
-  bootstrap: [AppComponent],
 })
 export class AppModule {}

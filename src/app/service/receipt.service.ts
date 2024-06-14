@@ -19,4 +19,10 @@ export class ReceiptService {
     // @ts-ignore
     return this.http.post<receipt>(`${this.baseUrl}/addReceipt/${id}`, receipt);
   }
+  public getAllReceipt(): Observable<Array<receipt>> {
+    return this.http.get<Array<receipt>>(`${this.baseUrl}/getallReceipt`);
+  }
+  public getReceiptByDate(dateR: Date): Observable<Array<receipt>>{
+    return this.http.get<Array<receipt>>(`${this.baseUrl}/getReceiptByDate?dateR=`+ dateR);
+  }
 }

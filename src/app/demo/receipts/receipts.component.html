@@ -1,0 +1,45 @@
+<div id="main-search" class="main-search">
+  <div class="input-group">
+    <input
+      type="text"
+      id="m-search"
+      class="form-control"
+      placeholder="Search by date (YYYY-MM-DD)..."
+      [style.width]="searchWidthString"
+      #searchInput
+    />
+    <a
+      href="javascript:"
+      class="input-group-append search-close"
+      (click)="searchOff()"
+    >
+      <i class="feather icon-x input-group-text"></i>
+    </a>
+    <span
+      class="input-group-append search-btn btn btn-primary"
+      (click)="performSearch(searchInput.value)"
+    >
+      <i class="feather icon-search input-group-text"></i>
+    </span>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-sm-12">
+    <app-card cardTitle="Receipts">
+      <ng-container *ngIf="receipts && receipts.length > 0; else noReceipts">
+        <div *ngFor="let receipt of receipts" class="receipt-item">
+          <p><strong>ID:</strong> {{ receipt.id }}</p>
+          <p><strong>Date Received:</strong> {{ receipt.dateReceived}}</p>
+          <p><strong>Quantity:</strong> {{ receipt.quantity }}</p>
+          <p><strong>Unit:</strong> {{ receipt.unit }}</p>
+          <p><strong>Receiver:</strong> {{ receipt.receiver.name }} ({{ receipt.receiver.email }})</p>
+          <p><strong>Donation:</strong> {{ receipt.donation.description }}</p>
+        </div>
+      </ng-container>
+      <ng-template #noReceipts>
+        <p>No receipts found.</p>
+      </ng-template>
+    </app-card>
+  </div>
+</div>

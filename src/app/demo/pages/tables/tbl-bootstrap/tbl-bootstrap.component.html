@@ -1,4 +1,31 @@
 <div class="row">
+  <!-- Search Area -->
+  <div class="col-xl-4 mb-3">
+    <div class="input-group">
+      <input type="text" class="form-control" placeholder="Search by Donation Type" [(ngModel)]="searchDonationType">
+      <div class="input-group-append">
+        <button class="btn btn-primary" type="button" (click)="search()">Search</button>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-8">
+    <div class="row">
+      <div class="col-xl-4 mb-3">
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="Enter your CIN" [(ngModel)]="cin">
+          <div class="input-group-append">
+            <button class="btn btn-primary" type="button" (click)="getDonationsByCIN()">View My Donations</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-4 mb-3">
+        <div class="input-group">
+          <a class="btn btn-primary" [routerLink]="['/forms', 'basic']">Add donation</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="col-xl-12">
     <app-card
       cardTitle="Striped Table"
@@ -16,10 +43,11 @@
             <th>Availability</th>
             <th>Pick-up location</th>
             <th>Donor</th>
+            <th>Actions</th> <!-- Added Actions column -->
           </tr>
           </thead>
           <tbody>
-          <tr *ngFor="let d of donations; let i = index">
+          <tr *ngFor="let d of filteredDonations; let i = index">
             <th scope="row">{{ i + 1 }}</th>
             <td>{{ d.donationType }}</td>
             <td>{{ d.quantity }}</td>
@@ -27,12 +55,19 @@
             <td>{{ d.availability }}</td>
             <td>{{ d.pickupLocation }}</td>
             <td>{{ d.donor.nom }}</td>
-            <td><button type="button" class="btn btn-info">
-              <i class="feather icon-info" (click)="viewDetails(d.id)"></i>Info
-            </button>
-              <button type="button" class="btn btn-success">
-                <i class="feather icon-check-circle" (click)="obtainDonation(d)"></i>Obtain
-              </button></td>
+            <td>
+              <button type="button" class="btn btn-info">
+                <i class="feather icon-info" (click)="viewDetails(d.id)"></i> Info
+              </button>
+              <button type="button" class="btn btn-success" *ngIf="d.quantity>0">
+                <i class="feather icon-check-circle" (click)="obtainDonation(d)"></i> Obtain
+              </button>
+              <!-- Delete button conditionally displayed -->
+              <button *ngIf="showDeleteButton" type="button" class="btn btn-danger" (click)="deleteDonation(d.id)">
+                <i class="feather icon-slash"></i> Delete
+              </button>
+
+            </td>
           </tr>
           </tbody>
         </table>

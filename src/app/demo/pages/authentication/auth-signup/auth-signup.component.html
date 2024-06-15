@@ -13,38 +13,47 @@
         </div>
         <h3 class="mb-4">Sign up</h3>
         <div class="input-group mb-3">
-          <input type="text" class="form-control" placeholder="Username" />
+          <input type="text" class="form-control" placeholder="Name" [(ngModel)]="newUser.nom" />
         </div>
         <div class="input-group mb-3">
-          <input type="email" class="form-control" placeholder="Email" />
+          <input type="text" class="form-control" placeholder="Last Name" [(ngModel)]="newUser.prenom" />
         </div>
-        <div class="input-group mb-4">
-          <input type="password" class="form-control" placeholder="Password" />
+        <div class="input-group mb-3">
+          <input type="email" class="form-control" placeholder="Email" [(ngModel)]="newUser.mail" />
         </div>
-        <div class="form-group text-start mb-4">
-          <div class="checkbox checkbox-fill d-inline">
-            <input
-              type="checkbox"
-              name="checkbox-fill-1"
-              id="checkbox-fill-1"
-              checked=""
-            />
-            <label for="checkbox-fill-1" class="cr"> Save Details</label>
-          </div>
+        <div class="input-group mb-3">
+          <input type="password" class="form-control" placeholder="Password" [(ngModel)]="newUser.password" />
         </div>
-        <div class="form-group text-start mb-3">
-          <div class="checkbox checkbox-fill d-inline">
-            <input
-              type="checkbox"
-              name="checkbox-fill-2"
-              id="checkbox-fill-2"
-            />
-            <label for="checkbox-fill-2" class="cr"
-              >Send me the <a href="javascript:"> Newsletter</a> weekly.</label
-            >
-          </div>
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" placeholder="Date of Birth (YYYY-MM-DD)" [(ngModel)]="newUser.dateNaissance" />
         </div>
-        <button class="btn btn-primary shadow-2 mb-4">Sign up</button>
+        <div class="input-group mb-3">
+          <select class="form-control" [(ngModel)]="newUser.role">
+            <option value="donor">Donor</option>
+            <option value="receiver">Receiver</option>
+          </select>
+        </div>
+        <div class="input-group mb-3">
+          <select class="form-control" [(ngModel)]="newUser.typeDonor">
+            <option value="hotel">Hotel</option>
+            <option value="restaurant">Restaurant</option>
+            <option value="campaign">Campaign</option>
+            <option value="person">Person</option>
+          </select>
+        </div>
+        <div class="input-group mb-3">
+          <input type="tel" class="form-control" placeholder="Telephone Number" [(ngModel)]="newUser.tel" />
+        </div>
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" placeholder="CIN (National Identity Card Number)" [(ngModel)]="newUser.CIN" />
+        </div>
+        <div class="input-group mb-3">
+          <select class="form-control" [(ngModel)]="newUser.gouvTun">
+            <option *ngFor="let value of gouvTunValues" [value]="value">{{ value }}</option>
+          </select>
+        </div>
+
+        <button class="btn btn-primary shadow-2 mb-4"  (click)="signUp()">Sign up</button>
         <p class="mb-0 text-muted">
           Already have an account?
           <a [routerLink]="['/auth/signin']"> Log in</a>

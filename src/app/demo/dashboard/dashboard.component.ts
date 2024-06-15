@@ -3,6 +3,14 @@ import { Component, OnInit } from '@angular/core';
 
 // project import
 import { SharedModule } from 'src/app/theme/shared/shared.module';
+interface DisplayData {
+  design: string;
+  title: string;
+  icon: string;
+  amount: number;
+  percentage: string;
+  progress: number;
+}
 
 declare const AmCharts: any;
 
@@ -18,6 +26,8 @@ import '../../../assets/charts/amchart/worldLow.js';
 
 import dataJson from 'src/fake-data/map_data';
 import mapColor from 'src/fake-data/map-color-data.json';
+import {DonationService} from "../../service/donation.service";
+import {ReceiptService} from "../../service/receipt.service";
 
 @Component({
   selector: 'app-dashboard',
@@ -27,7 +37,13 @@ import mapColor from 'src/fake-data/map-color-data.json';
   styleUrls: ['./dashboard.component.scss'],
 })
 export default class DashboardComponent implements OnInit {
+  displayData: DisplayData[] = [];
+
+  constructor(private donationService: DonationService, private receiptService: ReceiptService) {
+  }
+
   ngOnInit() {
+    this.loadDonationsAndReceipts();
     setTimeout(() => {
       const latlong = dataJson;
 
@@ -232,6 +248,38 @@ export default class DashboardComponent implements OnInit {
         ],
       });
     }, 500);
+  }
+
+  loadDonationsAndReceipts(): void {
+    this.donationService.getAllDonations().subscribe(donations => {
+      this.receiptService.getAllReceipt().subscribe(receipts => {
+        const totalDonations = donations.reduce((sum, donation) => sum + donation.quantity, 0);
+        const totalReceipts = receipts.reduce((sum, receipt) => sum + receipt.quantity, 0);
+
+        const total = totalDonations + totalReceipts;
+        const donationPercentage = total ? ((totalDonations / total) * 100).toFixed(2) : '0.00';
+        const receiptPercentage = total ? ((totalReceipts / total) * 100).toFixed(2) : '0.00';
+
+        this.displayData.push(
+          {
+            design: 'donation-design', // add appropriate class
+            title: 'Donations',
+            icon: 'feather-icon-donation', // add appropriate icon
+            amount: totalDonations,
+            percentage: `${donationPercentage}%`,
+            progress: parseFloat(donationPercentage)
+          },
+          {
+            design: 'receipt-design', // add appropriate class
+            title: 'Receipts',
+            icon: 'feather-icon-receipt', // add appropriate icon
+            amount: totalReceipts,
+            percentage: `${receiptPercentage}%`,
+            progress: parseFloat(receiptPercentage)
+          }
+        );
+      });
+    });
   }
 
   sales = [

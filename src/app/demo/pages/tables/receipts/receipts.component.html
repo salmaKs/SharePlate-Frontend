@@ -20,7 +20,7 @@
             <label for="pickupDate" class="form-label">Pick-up Date</label>
             <input type="text" class="form-control" id="pickupDate" [value]="pickupDate" disabled />
           </div>
-          <button type="submit" class="btn btn-primary">Submit</button>
+          <button type="submit" class="btn btn-primary" routerLink='/receipts'>Submit</button>
         </form>
       </div>
       <div *ngIf="!donation">

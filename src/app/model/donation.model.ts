@@ -18,7 +18,6 @@ export interface donation{
   availability: Date,
   pickupLocation: string,
   description: string,
-  donorName: string,
   donor: user,
   review: Array<review>
 }

@@ -1,5 +1,5 @@
 // angular import
-import { Component, ViewChild } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 
 // project import
 import { SharedModule } from 'src/app/theme/shared/shared.module';
@@ -24,6 +24,10 @@ import {
   ApexTitleSubtitle,
   ApexGrid,
 } from 'ng-apexcharts';
+import {DonationService} from "../../../service/donation.service";
+import {donation, donationType} from "../../../model/donation.model";
+import {gouvTun, role, user} from "../../../model/user.model";
+import {UserService} from "../../../service/user.service";
 
 export type ChartOptions = {
   series: ApexAxisChartSeries | ApexNonAxisChartSeries;
@@ -50,207 +54,21 @@ export type ChartOptions = {
   templateUrl: './apex-chart.component.html',
   styleUrls: ['./apex-chart.component.scss'],
 })
-export default class ApexChartComponent {
+export default class ApexChartComponent implements OnInit{
   @ViewChild('chart') chart: ChartComponent;
   barSimpleChart: Partial<ChartOptions>;
   barStackedChart: Partial<ChartOptions>;
   areaAngleChart: Partial<ChartOptions>;
   areaSmoothChart: Partial<ChartOptions>;
   lineAreaChart: Partial<ChartOptions>;
-  donutChart: Partial<ChartOptions>;
+  //donutChart: Partial<ChartOptions>;
+  donutChart: any = {}; // Define donut chart object
+  donationTypes: donationType[] = [];
+  // @ts-ignore
+  gouvTunUsers: { [key in gouvTun]: number } = {};
 
-  constructor() {
-    this.barSimpleChart = {
-      series: [
-        {
-          name: 'Net Profit',
-          data: [44, 55, 57, 56, 61, 58, 63, 60, 66],
-        },
-        {
-          name: 'Revenue',
-          data: [76, 85, 101, 98, 87, 105, 91, 114, 94],
-        },
-        {
-          name: 'Free Cash Flow',
-          data: [35, 41, 36, 26, 45, 48, 52, 53, 41],
-        },
-      ],
-      chart: {
-        type: 'bar',
-        height: 350,
-      },
-      plotOptions: {
-        bar: {
-          horizontal: false,
-          columnWidth: '55%',
-        },
-      },
-      dataLabels: {
-        enabled: false,
-      },
-      stroke: {
-        show: true,
-        width: 2,
-        colors: ['transparent'],
-      },
-      xaxis: {
-        categories: [
-          'Feb',
-          'Mar',
-          'Apr',
-          'May',
-          'Jun',
-          'Jul',
-          'Aug',
-          'Sep',
-          'Oct',
-        ],
-      },
-      yaxis: {
-        title: {
-          text: '$ (thousands)',
-        },
-      },
-      fill: {
-        opacity: 1,
-      },
-      tooltip: {
-        y: {
-          formatter: function (val) {
-            return '$ ' + val + ' thousands';
-          },
-        },
-      },
-    };
-    this.barStackedChart = {
-      series: [
-        {
-          name: 'PRODUCT A',
-          data: [44, 55, 41, 67, 22, 43, 21, 49],
-        },
-        {
-          name: 'PRODUCT B',
-          data: [13, 23, 20, 8, 13, 27, 33, 12],
-        },
-        {
-          name: 'PRODUCT C',
-          data: [11, 17, 15, 15, 21, 14, 15, 13],
-        },
-      ],
-      chart: {
-        type: 'bar',
-        height: 350,
-        stacked: true,
-        stackType: '100%',
-      },
-      responsive: [
-        {
-          breakpoint: 480,
-          options: {
-            legend: {
-              position: 'bottom',
-              offsetX: -10,
-              offsetY: 0,
-            },
-          },
-        },
-      ],
-      xaxis: {
-        categories: [
-          '2011 Q1',
-          '2011 Q2',
-          '2011 Q3',
-          '2011 Q4',
-          '2012 Q1',
-          '2012 Q2',
-          '2012 Q3',
-          '2012 Q4',
-        ],
-      },
-      fill: {
-        opacity: 1,
-      },
-      legend: {
-        position: 'right',
-        offsetX: 0,
-        offsetY: 50,
-      },
-    };
-    this.areaAngleChart = {
-      chart: {
-        height: 380,
-        type: 'area',
-        stacked: false,
-      },
-      stroke: {
-        curve: 'straight',
-      },
-      series: [
-        {
-          name: 'Music',
-          data: [11, 15, 26, 20, 33, 27],
-        },
-        {
-          name: 'Photos',
-          data: [32, 33, 21, 42, 19, 32],
-        },
-      ],
-      xaxis: {
-        categories: [
-          '2011 Q1',
-          '2011 Q2',
-          '2011 Q3',
-          '2011 Q4',
-          '2012 Q1',
-          '2012 Q2',
-        ],
-      },
-      tooltip: {
-        followCursor: true,
-      },
-      fill: {
-        opacity: 1,
-      },
-    };
-    this.areaSmoothChart = {
-      series: [
-        {
-          name: 'series1',
-          data: [31, 40, 28, 51, 42, 109, 100],
-        },
-        {
-          name: 'series2',
-          data: [11, 32, 45, 32, 34, 52, 41],
-        },
-      ],
-      chart: {
-        height: 350,
-        type: 'area',
-      },
-      dataLabels: {
-        enabled: false,
-      },
-      stroke: {
-        curve: 'smooth',
-      },
-      xaxis: {
-        type: 'datetime',
-        categories: [
-          '2018-09-19T00:00:00.000Z',
-          '2018-09-19T01:30:00.000Z',
-          '2018-09-19T02:30:00.000Z',
-          '2018-09-19T03:30:00.000Z',
-          '2018-09-19T04:30:00.000Z',
-          '2018-09-19T05:30:00.000Z',
-          '2018-09-19T06:30:00.000Z',
-        ],
-      },
-      tooltip: {
-        x: {
-          format: 'dd/MM/yy HH:mm',
-        },
-      },
-    };
+  constructor(private donationService: DonationService, private userService: UserService) {
+
     this.lineAreaChart = {
       series: [
         {
@@ -289,6 +107,13 @@ export default class ApexChartComponent {
         categories: ['2006', '2007', '2008', '2009', '2010', '2011', '2012'],
       },
     };
+  }
+ngOnInit():void{
+  this.fetchGouvTunUsers();
+  this.fetchDonationTypes();
+  this.updateBarStackedChart();
+}
+  updateDonutChart(series: number[], labels: string[]): void {
     this.donutChart = {
       chart: {
         type: 'donut',
@@ -308,18 +133,179 @@ export default class ApexChartComponent {
         },
       },
       colors: ['#00D8B6', '#008FFB', '#FEB019', '#FF4560', '#775DD0'],
-      series: [21, 23, 19, 14, 6],
-      labels: [
-        'Clothing',
-        'Food Products',
-        'Electronics',
-        'Kitchen Utility',
-        'Gardening',
-      ],
+      series: series,
+      labels: labels,
       legend: {
         position: 'left',
         offsetY: 80,
       },
     };
   }
+
+  fetchDonationTypes(): void {
+    this.donationService.getAllDonations().subscribe(
+      (donations: donation[]) => {
+        // Extract donation types from donations
+        this.donationTypes = Array.from(new Set(donations.map(donation => donation.donationType)));
+        // Fetch donation count for each type and update the donut chart
+        this.fetchDonationCounts();
+      },
+      (error) => {
+        console.error('Error fetching donations:', error);
+      }
+    );
+  }
+
+  fetchDonationCounts(): void {
+    // Initialize series and labels arrays
+    const series: number[] = [];
+    const labels: string[] = [];
+
+    // Iterate through each donation type and fetch its count
+    for (const type of this.donationTypes) {
+      this.donationService.getDonationByType(type).subscribe(
+        (donations: donation[]) => {
+          // Add count of donations for this type to series array
+          series.push(donations.length);
+          // Add donation type label to labels array
+          labels.push(type);
+          // Update donut chart with new data
+          this.updateDonutChart(series, labels);
+        },
+        (error) => {
+          console.error(`Error fetching donations for type ${type}:`, error);
+        }
+      );
+    }
+  }
+  fetchGouvTunUsers(): void {
+    for (const gouvTunKey in gouvTun) {
+      const gouvTunValue = gouvTun[gouvTunKey];
+      this.userService.userByGouv(gouvTunValue).subscribe(
+        (users: user[]) => {
+          this.gouvTunUsers[gouvTunValue] = users.length;
+          this.updateBarSimpleChart();
+        },
+        (error) => {
+          console.error(`Error fetching users for ${gouvTunValue}:`, error);
+        }
+      );
+    }
+  }
+
+  updateBarSimpleChart(): void {
+    const categories: string[] = [];
+    const seriesData: number[][] = [];
+
+    // Separate gouvTun values and their corresponding user counts into separate arrays
+    for (const gouvTunKey in this.gouvTunUsers) {
+      const gouvTunValue = gouvTun[gouvTunKey];
+      categories.push(gouvTunValue);
+      seriesData.push([this.gouvTunUsers[gouvTunValue]]);
+    }
+
+    this.barSimpleChart = {
+      series: [
+        { name: 'Users', data: seriesData.flat() },
+      ],
+      chart: {
+        type: 'bar',
+        height: 350,
+      },
+      plotOptions: {
+        bar: {
+          horizontal: false,
+          columnWidth: '55%',
+        },
+      },
+      dataLabels: {
+        enabled: false,
+      },
+      stroke: {
+        show: true,
+        width: 2,
+        colors: ['transparent'],
+      },
+      xaxis: {
+        categories: categories,
+        title: {
+          text: 'Governorate',
+        },
+      },
+      yaxis: {
+        title: {
+          text: 'Number of Users',
+        },
+      },
+      fill: {
+        opacity: 1,
+      },
+      tooltip: {
+        y: {
+          formatter: function (val: number) {
+            return val.toString(); // Convert number to string
+          },
+        },
+      },
+    };
+  }
+  updateBarStackedChart(): void {
+    const roles = Object.values(role); // Get all values of the role enum
+    const seriesData = [];
+
+    roles.forEach(role => {
+      this.userService.userByRole(role).subscribe(
+        (users: any[]) => {
+          // Count the number of users for the current role
+          const userCount = users.length;
+
+          // Push the role and its count to the series data
+          seriesData.push({
+            name: role,
+            data: [userCount]
+          });
+
+          // If all roles have been processed, update the chart
+          if (seriesData.length === roles.length) {
+            this.barStackedChart = {
+              series: seriesData,
+              chart: {
+                type: 'bar',
+                height: 350,
+                stacked: true,
+                stackType: '100%'
+              },
+              responsive: [
+                {
+                  breakpoint: 480,
+                  options: {
+                    legend: {
+                      position: 'bottom',
+                      offsetX: -10,
+                      offsetY: 0
+                    }
+                  }
+                }
+              ],
+              xaxis: {
+                categories: ['Total Users'] // You can customize this if needed
+              },
+              fill: {
+                opacity: 1
+              },
+              legend: {
+                position: 'right',
+                offsetX: 0,
+                offsetY: 50
+              }
+            };
+          }
+        },
+        (error) => {
+          console.error(`Error fetching users for role ${role}:`, error);
+        }
+      );
+    });
+  }
+
 }

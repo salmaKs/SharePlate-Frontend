@@ -4,9 +4,13 @@ import { AdminComponent } from './theme/layout/admin/admin.component';
 import { GuestComponent } from './theme/layout/guest/guest.component';
 import {DetailsComponent} from "./demo/pages/tables/details/details.component";
 import {ReceiptsComponent} from "./demo/pages/tables/receipts/receipts.component";
+import AuthSigninComponent from "./demo/pages/authentication/auth-signin/auth-signin.component";
 
 const routes: Routes = [
+  { path: '', redirectTo: '/auth/signin', pathMatch: 'full' },
+  { path: 'auth/signin', component: AuthSigninComponent },
   {
+
     path: '',
     component: AdminComponent,
     children: [
@@ -18,13 +22,6 @@ const routes: Routes = [
       {
         path: 'dashboard',
         loadComponent: () => import('./demo/dashboard/dashboard.component'),
-      },
-      {
-        path: 'basic',
-        loadChildren: () =>
-          import('./demo/ui-elements/ui-basic/ui-basic.module').then(
-            (m) => m.UiBasicModule,
-          ),
       },
       {
         path: 'forms',
@@ -46,11 +43,6 @@ const routes: Routes = [
         path: 'apexchart',
         loadComponent: () =>
           import('./demo/chart/apex-chart/apex-chart.component'),
-      },
-      {
-        path: 'sample-page',
-        loadComponent: () =>
-          import('./demo/extra/sample-page/sample-page.component'),
       },
     ],
   },

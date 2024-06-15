@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { CardComponent } from '../../../../theme/shared/components/card/card.component';
 import { NgIf } from '@angular/common';
 import { DonationService } from '../../../../service/donation.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import { receipt } from '../../../../model/receipt.model';
 import { ReceiptService } from '../../../../service/receipt.service';
 import Swal from 'sweetalert2';
@@ -15,7 +15,8 @@ import Swal from 'sweetalert2';
   imports: [
     FormsModule,
     CardComponent,
-    NgIf
+    NgIf,
+    RouterLink
   ],
   templateUrl: './receipts.component.html',
   styleUrls: ['./receipts.component.scss']

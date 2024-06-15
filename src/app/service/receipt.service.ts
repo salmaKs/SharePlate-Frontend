@@ -25,4 +25,8 @@ export class ReceiptService {
   public getReceiptByDate(dateR: Date): Observable<Array<receipt>>{
     return this.http.get<Array<receipt>>(`${this.baseUrl}/getReceiptByDate?dateR=`+ dateR);
   }
+
+  public deleteReceipt(id: number):Observable<any>{
+    return this.http.delete(`${this.baseUrl}/deleteReceipt/${id}`);
+  }
 }
